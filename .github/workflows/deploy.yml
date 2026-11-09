@@ -30,3 +30,6 @@ jobs:
           rsync -avz --delete \
             build/web/ \
             ${{ secrets.LIGHTSAIL_USER }}@${{ secrets.LIGHTSAIL_HOST }}:/var/www/flutterapp/
+
+            //haaaaa
+            
