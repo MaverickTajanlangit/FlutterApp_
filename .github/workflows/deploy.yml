@@ -1,32 +1,47 @@
-name: Flutter Web CI/CD Deployment
+
+name: CTF7 Flutter Web Deployment
+
 on:
   push:
     branches:
       - main
+    paths:
+      - 'FlutterApp(CTF7)/my_first_flutter_app/**'
+      - '.github/workflows/deploy.yml'
+
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
+
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
           channel: stable
+
       - name: Install Dependencies
         run: flutter pub get
+        working-directory: 'FlutterApp(CTF7)/my_first_flutter_app'
+
       - name: Build Flutter Web
         run: flutter build web --release
+        working-directory: 'FlutterApp(CTF7)/my_first_flutter_app'
+
       - name: Setup SSH
         uses: webfactory/ssh-agent@v0.9.0
         with:
           ssh-private-key: ${{ secrets.LIGHTSAIL_KEY }}
+
       - name: Add Server to Known Hosts
         run: |
           mkdir -p ~/.ssh
           ssh-keyscan -H ${{ secrets.LIGHTSAIL_HOST }} >> ~/.ssh/known_hosts
+
       - name: Deploy to Lightsail
         run: |
           rsync -avz --delete \
-            build/web/ \
+            "FlutterApp(CTF7)/my_first_flutter_app/build/web/" \
             ${{ secrets.LIGHTSAIL_USER }}@${{ secrets.LIGHTSAIL_HOST }}:/var/www/flutterapp/
