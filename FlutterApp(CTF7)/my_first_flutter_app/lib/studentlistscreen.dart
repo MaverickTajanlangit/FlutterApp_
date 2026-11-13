@@ -68,7 +68,7 @@ List<Student> students = [
   ),
   Student(
     image: 'assets/student4.jpg',
-    name: 'Julia Yashipakaka',
+    name: 'Julia 1323',
     course: 'BS Information Technology',
     yearLevel: '1st Year',
     age: 18,
