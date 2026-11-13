@@ -32,7 +32,7 @@ class Student {
 List<Student> students = [
   Student(
     image: 'assets/student1.jpg',
-    name: 'Maverick Tajanlangit',
+    name: 'lol',
     course: 'BS Information Technology',
     yearLevel: '3rd Year',
     age: 20,
