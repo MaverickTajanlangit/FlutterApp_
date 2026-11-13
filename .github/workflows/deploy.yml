@@ -2,6 +2,8 @@
 name: CTF7 Flutter Web Deployment
 
 on:
+  workflow_dispatch:
+
   push:
     branches:
       - main
