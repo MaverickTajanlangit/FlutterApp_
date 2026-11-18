@@ -1,7 +1,8 @@
+
 import 'package:flutter/material.dart';
 import 'studentlistscreen.dart';
 
-class StudentDetailsScreen extends StatelessWidget {
+class StudentDetailsScreen extends StatefulWidget {
   final Student student;
 
   const StudentDetailsScreen({
@@ -9,46 +10,28 @@ class StudentDetailsScreen extends StatelessWidget {
     required this.student,
   });
 
-  void showEditDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text('Edit Student'),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text('Name: ${student.name}'),
-              const SizedBox(height: 10),
-              Text('Student ID: ${student.studentId}'),
-              const SizedBox(height: 10),
-              Text('Course: ${student.course}'),
-              const SizedBox(height: 10),
-              Text('Year Level: ${student.yearLevel}'),
-            ],
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: const Text('Close'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: const Text('Submit'),
-            ),
-          ],
-        );
-      },
+  @override
+  State<StudentDetailsScreen> createState() =>
+      _StudentDetailsScreenState();
+}
+
+class _StudentDetailsScreenState
+    extends State<StudentDetailsScreen> {
+  Future<void> editStudent() async {
+    final result = await showStudentEditDialog(
+      context,
+      widget.student,
     );
+
+    if (result == true && mounted) {
+      setState(() {});
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    final student = widget.student;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Student Details'),
@@ -78,17 +61,19 @@ class StudentDetailsScreen extends StatelessWidget {
             const SizedBox(height: 10),
             Text('Email: ${student.email}'),
             const SizedBox(height: 10),
-            Text('Favorite Subject: ${student.favoriteSubject}'),
+            Text(
+              'Favorite Subject: ${student.favoriteSubject}',
+            ),
             const SizedBox(height: 10),
             Text(
-              student.isActive ? 'Status: Active' : 'Status: Inactive',
+              student.isActive
+                  ? 'Status: Active'
+                  : 'Status: Inactive',
             ),
             const SizedBox(height: 30),
             Center(
               child: ElevatedButton(
-                onPressed: () {
-                  showEditDialog(context);
-                },
+                onPressed: editStudent,
                 child: const Text('Edit'),
               ),
             ),
